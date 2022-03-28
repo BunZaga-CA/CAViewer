@@ -36,8 +36,8 @@ public class PEData
     public string Wings => wings;
     [SerializeField] private string wings;
 
-    public string CoreEssence => coreEssense;
-    [SerializeField] private string coreEssense;
+    public string CoreEssence => coreEssence;
+    [SerializeField] private string coreEssence;
 
     public int Id => id;
     [SerializeField] private int id;

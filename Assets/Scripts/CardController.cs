@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,17 +17,32 @@ public class CardController : MonoBehaviour
 
     [SerializeField] private TMPro.TextMeshProUGUI nftId;
     [SerializeField] private TMPro.TextMeshProUGUI nftFamily;
-    [SerializeField] private TMPro.TextMeshProUGUI nftEssence;
+    [SerializeField] private Image nftCoreEssence;
     [SerializeField] private TMPro.TextMeshProUGUI nftDivinity;
+    [SerializeField] private TMPro.TextMeshProUGUI nftHouse;
     [SerializeField] private TMPro.TextMeshProUGUI nftPurity;
+
+    [SerializeField] private ProGifPlayerHandler proGifPlayerHandler;
+    [SerializeField] private ProGifPlayerRawImage proGifPlayerRawImage;
     
-    private string loadedURL = "";
+    [SerializeField] private SpriteDB spriteDB;
+
+    [SerializeField] private PropertyControl propertyControl;
+    
+    private string videoURL;
+    private string gifURL;
 
     private Vector3 toFrontGoal = new Vector3(0, 0, 0);
     private Vector3 toBackGoal = new Vector3(0, 180, 0);
     
     private const string DIVINITY_TEMPLATE = "Divinity: {0}";
     private const string PURITY_TEMPLATE = "Purity: {0}";
+
+    private int loadedTotal = 0;
+    private int loadedMask = 3;
+    private PEData peData;
+
+    private CardState lastCardState = CardState.ShowingFront;
     
     private void Awake()
     {
@@ -34,12 +50,6 @@ public class CardController : MonoBehaviour
         NFTViewer.CardStateChanged += OnCardStateChanged;
         
         ClearData();
-        
-        if(cardButtonFront != null)
-            cardButtonFront.onClick.AddListener(OnCardButtonClicked);
-        
-        if(cardButtonBack != null)
-            cardButtonBack.onClick.AddListener(OnCardButtonClicked);
     }
     
     private void OnCardButtonClicked()
@@ -49,21 +59,13 @@ public class CardController : MonoBehaviour
             case CardState.Empty:
             case CardState.Fetching:
                 return;
+            
             case CardState.ShowingFront:
-            case CardState.ToFront:
-                NFTViewer.CardState = CardState.ToBack;
-                cardRoot.DORotate(toBackGoal, 0.5f).OnComplete(() =>
-                {
-                    NFTViewer.CardState = CardState.ShowingBack;
-                });
+                NFTViewer.ChangeCardState(CardState.ToBack);
                 break;
+            
             case CardState.ShowingBack:
-            case CardState.ToBack:
-                NFTViewer.CardState = CardState.ToFront;
-                cardRoot.DORotate(toFrontGoal, 0.5f).OnComplete(() =>
-                {
-                    NFTViewer.CardState = CardState.ShowingFront;
-                });
+                NFTViewer.ChangeCardState(CardState.ToFront);
                 break;
         }
     }
@@ -83,29 +85,134 @@ public class CardController : MonoBehaviour
                 ClearData();
                 break;
             
+            case CardState.ToFront:
+                if(cardButtonBack != null)
+                   cardButtonBack.onClick.RemoveListener(OnCardButtonClicked);
+                
+                if (videoPlayer.isPaused || !videoPlayer.isPlaying)
+                    videoPlayer.Play();
+
+                cardRoot.DORotate(toFrontGoal, 1).OnComplete(() =>
+                {
+                    NFTViewer.ChangeCardState(CardState.ShowingFront);
+                });
+                break;
+            
             case CardState.ShowingFront:
-                videoPlayer.url = loadedURL;
-                videoPlayer.Play();
+                if(cardButtonFront != null)
+                    cardButtonFront.onClick.AddListener(OnCardButtonClicked);
+                
+                if (videoPlayer.isPaused || !videoPlayer.isPlaying)
+                    videoPlayer.Play();
+
+                        
+                if (proGifPlayerRawImage != null)
+                    proGifPlayerRawImage.Pause();
+
+                lastCardState = CardState.ShowingFront;
+                break;
+            
+            case CardState.ToBack:
+                if(cardButtonFront != null)
+                    cardButtonFront.onClick.RemoveListener(OnCardButtonClicked);
+
+                if (proGifPlayerRawImage != null)
+                    proGifPlayerRawImage.Resume();
+                
+                cardRoot.DORotate(toBackGoal, 1).OnComplete(() =>
+                {
+                    NFTViewer.ChangeCardState(CardState.ShowingBack);
+                });
+                break;
+            
+            case CardState.ShowingBack:
+                if(cardButtonBack != null)
+                    cardButtonBack.onClick.AddListener(OnCardButtonClicked);
+                
+                videoPlayer.Pause();
+                
+                if (proGifPlayerRawImage != null)
+                    proGifPlayerRawImage.Resume();
+                
+                lastCardState = CardState.ShowingBack;
                 break;
         }
     }
     
     private void OnPEDataLoaded(PEData peData)
     {
-        loadedURL = string.Format(NFTViewer.AnimationURI, peData.PicCode);
-        NFTViewer.CardState = CardState.ShowingFront;
-        nftId.text = peData.Id.ToString();
-        nftFamily.text = peData.Family;
-        nftEssence.text = peData.CoreEssence;
-        nftDivinity.text = string.Format(DIVINITY_TEMPLATE, peData.Divinity);
-        nftPurity.text = String.Format(PURITY_TEMPLATE, peData.Purity);
-        OnCardStateChanged(NFTViewer.CardState);
+        this.peData = peData;
+        
+        videoURL = string.Format(NFTViewer.AnimationURI, peData.PicCode);
+        gifURL = string.Format(NFTViewer.ThumbURI, peData.PicCode);
+        
+        videoPlayer.url = videoURL;
+        videoPlayer.Prepare();
+
+        if (proGifPlayerHandler != null)
+        {
+            proGifPlayerHandler.m_WebGifUrl = gifURL;
+            proGifPlayerHandler.Play();
+            StartCoroutine(CheckGifComplete());
+        }
+        
+        StartCoroutine(CheckVideoComplete());
     }
 
+    private IEnumerator CheckGifComplete()
+    {
+        while (proGifPlayerRawImage.IsLoadingComplete == false)
+            yield return null;
+        
+        proGifPlayerRawImage.Pause();
+        CheckDoneLoadingData(2);
+    }
+
+    private IEnumerator CheckVideoComplete()
+    {
+        while(!videoPlayer.isPrepared)
+            yield return null;
+        
+        CheckDoneLoadingData(1);
+    }
+    
+
+    private void CheckDoneLoadingData(int value)
+    {
+        loadedTotal |= value;
+        if (loadedTotal < loadedMask)
+            return;
+        
+        nftId.text = peData.Id.ToString();
+        
+        var house = Regex.Replace(peData.CoreEssence, @"\p{Cs}", "").Trim();
+        
+        nftFamily.text = peData.Family;
+        nftCoreEssence.sprite = spriteDB.GetSprite(house);
+        nftCoreEssence.gameObject.SetActive(true);
+        
+        if (nftHouse != null)
+            nftHouse.text = house;
+
+        nftDivinity.text = string.Format(DIVINITY_TEMPLATE, peData.Divinity);
+        nftPurity.text = String.Format(PURITY_TEMPLATE, peData.Purity);
+        
+        propertyControl.SetProperties(peData);
+
+        NFTViewer.ChangeCardState(lastCardState == CardState.ShowingFront ? CardState.ShowingFront : CardState.ShowingBack);
+    }
+    
     private void ClearData()
     {
-        loadedURL = String.Empty;
+        propertyControl.ClearData();
+        videoURL = String.Empty;
+        gifURL = String.Empty;
+        loadedTotal = 0;
+        peData = null;
         
+        if( proGifPlayerRawImage != null)
+            proGifPlayerRawImage.Clear();
+
         if(videoPlayer != null)
             videoPlayer.Stop();
         
@@ -117,14 +224,20 @@ public class CardController : MonoBehaviour
         
         if(nftFamily != null)
             nftFamily.text = string.Empty;
-        
-        if(nftEssence != null)
-            nftEssence.text = string.Empty;
-        
+
+        if (nftCoreEssence != null)
+        {
+            nftCoreEssence.gameObject.SetActive(false);
+            nftCoreEssence.sprite = null;
+        }
+
         if(nftDivinity != null)
             nftDivinity.text = string.Empty;
         
         if(nftPurity != null)
             nftPurity.text = string.Empty;
+
+        if (nftHouse != null)
+            nftHouse.text = string.Empty;
     }
 }

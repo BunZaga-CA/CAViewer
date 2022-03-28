@@ -22,9 +22,9 @@ public class NFTViewer : MonoBehaviour
     
     public static string ThumbURI = "https://champions.io/champions/nfts/art/{0}/thumbnail.gif";
     public static string AnimationURI = "https://champions.io/champions/nfts/art/{0}/animation.mp4";
-
+    
     [SerializeField] private TextAsset nftDBRaw;
-
+    
     [SerializeField] private Dictionary<int, PEData> nftDB = new Dictionary<int, PEData>();
     [SerializeField] private TMPro.TMP_InputField nftInput;
     [SerializeField] private Button fetchNFT;
@@ -51,14 +51,18 @@ public class NFTViewer : MonoBehaviour
             CardState = CardState.Fetching;
             CardStateChanged?.Invoke(CardState);
 
-            if (nftDB.ContainsKey(nftId) && nftDB.TryGetValue(nftId, out var peData))
-            {
+            if (nftDB.TryGetValue(nftId, out var peData))
                 PEDataLoaded?.Invoke(peData);
-            }
         }
         catch
         {
         }
+    }
+
+    public static void ChangeCardState(CardState newState)
+    {
+        CardState = newState;
+        CardStateChanged?.Invoke(newState);
     }
 }
 
