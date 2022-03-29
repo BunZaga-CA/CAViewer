@@ -25,15 +25,18 @@ public class CardController : MonoBehaviour
     [SerializeField] private ProGifPlayerHandler proGifPlayerHandler;
     [SerializeField] private ProGifPlayerRawImage proGifPlayerRawImage;
     
-    [SerializeField] private SpriteDB spriteDB;
+    [SerializeField] private EssenceDB essenceDB;
 
     [SerializeField] private PropertyControl propertyControl;
+
+    [SerializeField] private GameObject[] fetching;
+    [SerializeField] private GameObject[] cardParts;
     
     private string videoURL;
     private string gifURL;
 
-    private Vector3 toFrontGoal = new Vector3(0, 0, 0);
-    private Vector3 toBackGoal = new Vector3(0, 180, 0);
+    private Vector3 toFrontGoal = new Vector3(0, 180, 0);
+    private Vector3 toBackGoal = new Vector3(0, -180, 0);
     
     private const string DIVINITY_TEMPLATE = "Divinity: {0}";
     private const string PURITY_TEMPLATE = "Purity: {0}";
@@ -50,6 +53,10 @@ public class CardController : MonoBehaviour
         NFTViewer.CardStateChanged += OnCardStateChanged;
         
         ClearData();
+        for (int i = 0, ilen = cardParts.Length; i < ilen; i++)
+        {
+            cardParts[i].SetActive(false);
+        }
     }
     
     private void OnCardButtonClicked()
@@ -83,6 +90,10 @@ public class CardController : MonoBehaviour
             
             case CardState.Fetching:
                 ClearData();
+                for(int i = 0, ilen = fetching.Length; i < ilen ;i++)
+                {
+                    fetching[i].SetActive(true);
+                }
                 break;
             
             case CardState.ToFront:
@@ -92,7 +103,7 @@ public class CardController : MonoBehaviour
                 if (videoPlayer.isPaused || !videoPlayer.isPlaying)
                     videoPlayer.Play();
 
-                cardRoot.DORotate(toFrontGoal, 1).OnComplete(() =>
+                cardRoot.DORotate(toFrontGoal, 1, RotateMode.LocalAxisAdd).OnComplete(() =>
                 {
                     NFTViewer.ChangeCardState(CardState.ShowingFront);
                 });
@@ -119,7 +130,7 @@ public class CardController : MonoBehaviour
                 if (proGifPlayerRawImage != null)
                     proGifPlayerRawImage.Resume();
                 
-                cardRoot.DORotate(toBackGoal, 1).OnComplete(() =>
+                cardRoot.DORotate(toBackGoal, 1, RotateMode.LocalAxisAdd).OnComplete(() =>
                 {
                     NFTViewer.ChangeCardState(CardState.ShowingBack);
                 });
@@ -184,21 +195,25 @@ public class CardController : MonoBehaviour
             return;
         
         nftId.text = peData.Id.ToString();
-        
-        var house = Regex.Replace(peData.CoreEssence, @"\p{Cs}", "").Trim();
+
+        var houseProperty = NFTViewer.GetPropertyData(peData.CoreEssence);
         
         nftFamily.text = peData.Family;
-        nftCoreEssence.sprite = spriteDB.GetSprite(house);
+        nftCoreEssence.sprite = essenceDB.GetEssence(houseProperty.EssenceType).EssenceSprite;
         nftCoreEssence.gameObject.SetActive(true);
         
         if (nftHouse != null)
-            nftHouse.text = house;
+            nftHouse.text = houseProperty.Value;
 
         nftDivinity.text = string.Format(DIVINITY_TEMPLATE, peData.Divinity);
         nftPurity.text = String.Format(PURITY_TEMPLATE, peData.Purity);
         
         propertyControl.SetProperties(peData);
 
+        for(int i = 0, ilen = fetching.Length; i < ilen ;i++)
+        {
+            fetching[i].SetActive(false);
+        }
         NFTViewer.ChangeCardState(lastCardState == CardState.ShowingFront ? CardState.ShowingFront : CardState.ShowingBack);
     }
     
@@ -209,6 +224,16 @@ public class CardController : MonoBehaviour
         gifURL = String.Empty;
         loadedTotal = 0;
         peData = null;
+        
+        for (int i = 0, ilen = cardParts.Length; i < ilen; i++)
+        {
+            cardParts[i].SetActive(true);
+        }
+        
+        for(int i = 0, ilen = fetching.Length; i < ilen ;i++)
+        {
+            fetching[i].SetActive(false);
+        }
         
         if( proGifPlayerRawImage != null)
             proGifPlayerRawImage.Clear();

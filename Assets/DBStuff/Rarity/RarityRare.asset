@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b450a9b9649340342939db07294f1898, type: 3}
-  m_Name: Life
+  m_Script: {fileID: 11500000, guid: 8f5ed8e7e1bc5ae4484d9f4486b41dd2, type: 3}
+  m_Name: RarityRare
   m_EditorClassIdentifier: 
-  essenceType: 3
-  essenceSprite: {fileID: 21300000, guid: c4fbb7a45fe0f6a449cc1602a4b2f91b, type: 3}
+  rarity: 2
+  propertySprite: {fileID: 0}
+  propertyColor: {r: 0.84313726, g: 0.9098039, b: 1, a: 1}

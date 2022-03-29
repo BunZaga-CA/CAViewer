@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,9 +50,7 @@ public class NFTViewer : MonoBehaviour
         try
         {
             var nftId = Int32.Parse(nftInput.text);
-            Debug.Log("Starting to fetch data");
-            CardState = CardState.Fetching;
-            CardStateChanged?.Invoke(CardState);
+            ChangeCardState(CardState.Fetching);
 
             if (nftDB.TryGetValue(nftId, out var peData))
                 PEDataLoaded?.Invoke(peData);
@@ -63,6 +64,60 @@ public class NFTViewer : MonoBehaviour
     {
         CardState = newState;
         CardStateChanged?.Invoke(newState);
+    }
+
+    public static PropertyData GetPropertyData(string stringIn)
+    {
+        var stringData = stringIn.Split();
+        var data = new PropertyData();
+        data.Rarity = Rarity.None;
+        var strBuilder = new StringBuilder();
+
+        for (int i = 0, ilen = stringData.Length; i < ilen; i++)
+        {
+            var remove = true;
+            switch (stringData[i])
+            {
+                case "C":
+                    data.Rarity = Rarity.Common;
+                    break;
+                case "R":
+                    data.Rarity = Rarity.Rare;
+                    break;
+                case "E":
+                    data.Rarity = Rarity.Epic;
+                    break;
+                case "D":
+                    data.Rarity = Rarity.Divine;
+                    break;
+                
+                case "🔮":
+                    data.EssenceType = EssenceType.Arcane;
+                    break;
+                case "💀":
+                    data.EssenceType = EssenceType.Death;
+                    break;
+                case "🌱":
+                    data.EssenceType = EssenceType.Life;
+                    break;
+                case "-":
+                    break;
+                
+                default:
+                    remove = false;
+                    break;
+            }
+
+            if (!remove)
+            {
+                if (strBuilder.Length > 0)
+                    strBuilder.Append(" ");
+                strBuilder.Append(stringData[i]);
+            }
+        }
+        
+        data.Value = strBuilder.ToString();
+        return data;
     }
 }
 
