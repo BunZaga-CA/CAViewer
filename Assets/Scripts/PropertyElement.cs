@@ -27,9 +27,13 @@ public class PropertyElement : MonoBehaviour
                 essenceImage.gameObject.SetActive(data.EssenceType != EssenceType.None);
                 var essenceData = essenceDB.GetEssence(data.EssenceType);
                 if(essenceData != null)
-                    essenceImage.sprite = essenceData.EssenceSprite;
-                    
-                essenceMatch.gameObject.SetActive(data.EssenceType == coreType);
+                    essenceImage.sprite = essenceData.EssenceSpriteTop;
+
+                if (data.EssenceType == coreType)
+                {
+                    essenceMatch.color = rarityArt.PropertyColorDark;
+                    essenceMatch.gameObject.SetActive(true);
+                }
             }
         }
     }

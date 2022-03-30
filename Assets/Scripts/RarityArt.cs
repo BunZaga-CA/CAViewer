@@ -23,4 +23,7 @@ public class RarityArt : ScriptableObject
 
     public Color PropertyColor => propertyColor;
     [SerializeField] private Color propertyColor;
+    
+    public Color PropertyColorDark => propertyColorDark;
+    [SerializeField] private Color propertyColorDark;
 }

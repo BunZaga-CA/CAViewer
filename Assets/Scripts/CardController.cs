@@ -17,20 +17,28 @@ public class CardController : MonoBehaviour
 
     [SerializeField] private TMPro.TextMeshProUGUI nftId;
     [SerializeField] private TMPro.TextMeshProUGUI nftFamily;
-    [SerializeField] private Image nftCoreEssence;
-    [SerializeField] private TMPro.TextMeshProUGUI nftDivinity;
-    [SerializeField] private TMPro.TextMeshProUGUI nftHouse;
-    [SerializeField] private TMPro.TextMeshProUGUI nftPurity;
+    [SerializeField] private Image nftCoreEssenceTop;
+    [SerializeField] private Image nftCoreEssenceLeft;
+    [SerializeField] private Image nftCoreEssenceRight;
+    [SerializeField] private Image nftPurityGlow;
+    [SerializeField] private Image nftPurity;
 
     [SerializeField] private ProGifPlayerHandler proGifPlayerHandler;
     [SerializeField] private ProGifPlayerRawImage proGifPlayerRawImage;
     
     [SerializeField] private EssenceDB essenceDB;
+    [SerializeField] private PurityDB purityDB;
 
     [SerializeField] private PropertyControl propertyControl;
 
     [SerializeField] private GameObject[] fetching;
     [SerializeField] private GameObject[] cardParts;
+    [SerializeField] private GameObject[] frames;
+    [SerializeField] private Renderer[] lightHouseColorRenderers;
+    [SerializeField] private Image[] lightHouseColorImages;
+    [SerializeField] private Image[] darkHouseColorImages;
+    [SerializeField] private TMPro.TextMeshProUGUI[] lightHouseColorText;
+    [SerializeField] private TMPro.TextMeshProUGUI[] darkHouseColorText;
     
     private string videoURL;
     private string gifURL;
@@ -38,15 +46,17 @@ public class CardController : MonoBehaviour
     private Vector3 toFrontGoal = new Vector3(0, 180, 0);
     private Vector3 toBackGoal = new Vector3(0, -180, 0);
     
-    private const string DIVINITY_TEMPLATE = "Divinity: {0}";
-    private const string PURITY_TEMPLATE = "Purity: {0}";
+    private static readonly string DIVINITY_TEMPLATE = "Divinity: {0}";
+    private static readonly string PURITY_TEMPLATE = "Purity: {0}";
 
     private int loadedTotal = 0;
     private int loadedMask = 3;
     private PEData peData;
 
     private CardState lastCardState = CardState.ShowingFront;
-    
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+    private static readonly int DiffuseColor = Shader.PropertyToID("_DiffuseColor");
+
     private void Awake()
     {
         NFTViewer.PEDataLoaded += OnPEDataLoaded;
@@ -199,21 +209,65 @@ public class CardController : MonoBehaviour
         var houseProperty = NFTViewer.GetPropertyData(peData.CoreEssence);
         
         nftFamily.text = peData.Family;
-        nftCoreEssence.sprite = essenceDB.GetEssence(houseProperty.EssenceType).EssenceSprite;
-        nftCoreEssence.gameObject.SetActive(true);
+        var essence = essenceDB.GetEssence(houseProperty.EssenceType);
+        nftCoreEssenceTop.sprite = essence.EssenceSpriteTop;
+        nftCoreEssenceTop.gameObject.SetActive(true);
         
-        if (nftHouse != null)
-            nftHouse.text = houseProperty.Value;
+        nftCoreEssenceLeft.sprite = essence.EssenceSpriteLeft;
+        nftCoreEssenceLeft.gameObject.SetActive(true);
+        
+        nftCoreEssenceRight.sprite = essence.EssenceSpriteRight;
+        nftCoreEssenceRight.gameObject.SetActive(true);
 
-        nftDivinity.text = string.Format(DIVINITY_TEMPLATE, peData.Divinity);
-        nftPurity.text = String.Format(PURITY_TEMPLATE, peData.Purity);
-        
+        if (peData.Purity > 0)
+        {
+            var purityData = purityDB.GetPurityData(peData.Purity);
+            if (purityData != null)
+            {
+                nftPurity.sprite = purityData.PuritySprite;
+                nftPurityGlow.sprite = purityData.PurityGlowSprite;
+                nftPurityGlow.color = essence.EssenceColor;
+
+
+                if (nftPurity != null)
+                    nftPurity.gameObject.SetActive(true);
+
+                if (nftPurityGlow != null)
+                    nftPurityGlow.gameObject.SetActive(true);
+            }
+        }
+
+
         propertyControl.SetProperties(peData);
 
         for(int i = 0, ilen = fetching.Length; i < ilen ;i++)
         {
             fetching[i].SetActive(false);
         }
+        
+        for(int i = 0, ilen = frames.Length; i < ilen ;i++)
+        {
+            frames[i].SetActive(true);
+        }
+
+        for (int i = 0, ilen = lightHouseColorRenderers.Length; i < ilen; ++i)
+        {
+            lightHouseColorRenderers[i].material.SetColor(DiffuseColor, essence.EssenceColor);
+            lightHouseColorRenderers[i].material.SetColor(EmissionColor, essence.EssenceColor);
+        }
+
+        for (int i = 0, ilen = lightHouseColorImages.Length; i < ilen; ++i)
+            lightHouseColorImages[i].color = essence.EssenceColor;
+        
+        for (int i = 0, ilen = darkHouseColorImages.Length; i < ilen; ++i)
+            darkHouseColorImages[i].color = essence.EssenceColorDark;
+        
+        for (int i = 0, ilen = lightHouseColorText.Length; i < ilen; ++i)
+            lightHouseColorText[i].color = essence.EssenceColor;
+        
+        for (int i = 0, ilen = darkHouseColorText.Length; i < ilen; ++i)
+            darkHouseColorText[i].color = essence.EssenceColorDark;
+
         NFTViewer.ChangeCardState(lastCardState == CardState.ShowingFront ? CardState.ShowingFront : CardState.ShowingBack);
     }
     
@@ -234,6 +288,11 @@ public class CardController : MonoBehaviour
         {
             fetching[i].SetActive(false);
         }
+
+        for(int i = 0, ilen = frames.Length; i < ilen ;i++)
+        {
+            frames[i].SetActive(false);
+        }
         
         if( proGifPlayerRawImage != null)
             proGifPlayerRawImage.Clear();
@@ -250,19 +309,28 @@ public class CardController : MonoBehaviour
         if(nftFamily != null)
             nftFamily.text = string.Empty;
 
-        if (nftCoreEssence != null)
+        if (nftCoreEssenceTop != null)
         {
-            nftCoreEssence.gameObject.SetActive(false);
-            nftCoreEssence.sprite = null;
+            nftCoreEssenceTop.gameObject.SetActive(false);
+            nftCoreEssenceTop.sprite = null;
         }
-
-        if(nftDivinity != null)
-            nftDivinity.text = string.Empty;
+        
+        if (nftCoreEssenceLeft != null)
+        {
+            nftCoreEssenceLeft.gameObject.SetActive(false);
+            nftCoreEssenceLeft.sprite = null;
+        }
+        
+        if (nftCoreEssenceRight != null)
+        {
+            nftCoreEssenceRight.gameObject.SetActive(false);
+            nftCoreEssenceRight.sprite = null;
+        }
         
         if(nftPurity != null)
-            nftPurity.text = string.Empty;
-
-        if (nftHouse != null)
-            nftHouse.text = string.Empty;
+            nftPurity.gameObject.SetActive(false);
+        
+        if(nftPurityGlow != null)
+            nftPurityGlow.gameObject.SetActive(false);
     }
 }

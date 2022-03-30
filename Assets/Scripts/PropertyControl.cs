@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class PropertyControl : MonoBehaviour
 {
     [SerializeField] private TMPro.TextMeshProUGUI idText;
-    [SerializeField] private Image coreEssenceImage;
+    [SerializeField] private Image coreEssenceImageTop;
+    [SerializeField] private Image coreEssenceImageLeft;
+    [SerializeField] private Image coreEssenceImageRight;
     [SerializeField] private TMPro.TextMeshProUGUI familyText;
     [SerializeField] private TMPro.TextMeshProUGUI houseText;
     [SerializeField] private TMPro.TextMeshProUGUI divinityText;
@@ -32,7 +34,12 @@ public class PropertyControl : MonoBehaviour
         familyText.text = peData.Family;
         var coreEssence = NFTViewer.GetPropertyData(peData.CoreEssence);
         var essenceData = essenceDB.GetEssence(coreEssence.EssenceType);
-        coreEssenceImage.sprite = essenceData.EssenceSprite;
+        coreEssenceImageTop.sprite = essenceData.EssenceSpriteTop;
+        coreEssenceImageTop.gameObject.SetActive(true);
+        coreEssenceImageLeft.sprite = essenceData.EssenceSpriteLeft;
+        coreEssenceImageLeft.gameObject.SetActive(true);
+        coreEssenceImageRight.sprite = essenceData.EssenceSpriteRight;
+        coreEssenceImageRight.gameObject.SetActive(true);
         houseText.text = coreEssence.Value;
         divinityText.text = string.Format(DIVINITY, peData.Divinity);
         purityText.text = string.Format(PURITY, peData.Purity);
@@ -56,6 +63,13 @@ public class PropertyControl : MonoBehaviour
         divinityText.text = string.Empty;
         purityText.text = string.Empty;
         idText.text = string.Empty;
+        
+        coreEssenceImageTop.sprite = null;
+        coreEssenceImageTop.gameObject.SetActive(false);
+        coreEssenceImageLeft.sprite = null;
+        coreEssenceImageLeft.gameObject.SetActive(false);
+        coreEssenceImageRight.sprite = null;
+        coreEssenceImageRight.gameObject.SetActive(false);
         
         claws.ClearProperty();
         fangs.ClearProperty();

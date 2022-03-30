@@ -15,3 +15,4 @@ MonoBehaviour:
   rarity: 4
   propertySprite: {fileID: 0}
   propertyColor: {r: 0.9433962, g: 0.86795807, b: 0.7164471, a: 1}
+  propertyColorDark: {r: 1, g: 0.5019608, b: 0, a: 1}

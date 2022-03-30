@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b450a9b9649340342939db07294f1898, type: 3}
-  m_Name: Arcane
+  m_Script: {fileID: 11500000, guid: 01e12249d5339fd47a13827d2ebd45ab, type: 3}
+  m_Name: P3
   m_EditorClassIdentifier: 
-  essenceType: 1
-  essenceSprite: {fileID: 21300000, guid: ca8ddcd08e34bbc428051a25fcb1b638, type: 3}
+  puritySprite: {fileID: -9082770404099337894, guid: af93091dfb4c71043a508bb71196b506, type: 3}
+  purityGlowSprite: {fileID: -3894562758085560535, guid: c047f2b5db1a7c94f9b8459466440fdd, type: 3}
