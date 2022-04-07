@@ -1,0 +1,819 @@
+{
+    "Items" : [
+     {
+        "name" : "Tail",
+       "properties":[
+         {
+           "FIELD1": "E 💀 Noxious",
+           "FIELD2": " 101,"
+         },
+         {
+           "FIELD1": "E 🔮 Featherowl",
+           "FIELD2": " 108,"
+         },
+         {
+           "FIELD1": "E 🌱  Peacock",
+           "FIELD2": " 121,"
+         },
+         {
+           "FIELD1": "R 💀 Bonestinger",
+           "FIELD2": " 230,"
+         },
+         {
+           "FIELD1": "R 🌱  Ringshine",
+           "FIELD2": " 234,"
+         },
+         {
+           "FIELD1": "R 💀 Viperial",
+           "FIELD2": " 238,"
+         },
+         {
+           "FIELD1": "R 🔮 Scorpid",
+           "FIELD2": " 251,"
+         },
+         {
+           "FIELD1": "R 🌱  Prideback",
+           "FIELD2": " 263,"
+         },
+         {
+           "FIELD1": "R 🔮 Tigris",
+           "FIELD2": " 270,"
+         },
+         {
+           "FIELD1": "D 🌱  Dawnsong",
+           "FIELD2": " 304,"
+         },
+         {
+           "FIELD1": "D 💀 Doomscale",
+           "FIELD2": " 317,"
+         },
+         {
+           "FIELD1": "D 🔮 Gravelash",
+           "FIELD2": " 322,"
+         },
+         {
+           "FIELD1": "C 🌱  Feathershine",
+           "FIELD2": " 362,"
+         },
+         {
+           "FIELD1": "C 💀 Moonfang",
+           "FIELD2": " 387,"
+         },
+         {
+           "FIELD1": "C 🌱  Bliss",
+           "FIELD2": " 403,"
+         },
+         {
+           "FIELD1": "C 🔮 Scalecoat",
+           "FIELD2": " 406,"
+         },
+         {
+           "FIELD1": "C 🔮 Plategrom",
+           "FIELD2": " 411,"
+         },
+         {
+           "FIELD1": "C 💀 Wurm",
+           "FIELD2": " 413,"
+         },
+         {
+           "FIELD1": "C 💀 Leandrake",
+           "FIELD2": " 416,"
+         },
+         {
+           "FIELD1": "C 🌱  Griffin",
+           "FIELD2": " 422,"
+         },
+         {
+           "FIELD1": "C 🔮 Shiftplume",
+           "FIELD2": " 424,"
+         },
+         {
+           "FIELD1": "None",
+           "FIELD2": " 1219"
+         }
+       ]
+    },
+     {
+         "name" :"Claws",
+       "properties": [
+         {
+           "FIELD1": "E 🔮 Pincer",
+           "FIELD2": " 103,"
+         },
+         {
+           "FIELD1": "E 💀 Trident",
+           "FIELD2": " 109,"
+         },
+         {
+           "FIELD1": "E 🌱  Psionic",
+           "FIELD2": " 115,"
+         },
+         {
+           "FIELD1": "C 💀 Elongated ",
+           "FIELD2": " 130,"
+         },
+         {
+           "FIELD1": "R 💀 Overarching",
+           "FIELD2": " 221,"
+         },
+         {
+           "FIELD1": "R 🔮 Hooked",
+           "FIELD2": " 232,"
+         },
+         {
+           "FIELD1": "R 🌱  Peregrine",
+           "FIELD2": " 234,"
+         },
+         {
+           "FIELD1": "R 🔮 Drillforce",
+           "FIELD2": " 241,"
+         },
+         {
+           "FIELD1": "R 💀 Runeplate",
+           "FIELD2": " 260,"
+         },
+         {
+           "FIELD1": "R 🌱  Cartilage",
+           "FIELD2": " 260,"
+         },
+         {
+           "FIELD1": "C 💀 Elongated",
+           "FIELD2": " 263,"
+         },
+         {
+           "FIELD1": "D 🔮 Gutripper",
+           "FIELD2": " 303,"
+         },
+         {
+           "FIELD1": "D 🌱  Heartseeker",
+           "FIELD2": " 303,"
+         },
+         {
+           "FIELD1": "D 💀 Marrowstrike",
+           "FIELD2": " 308,"
+         },
+         {
+           "FIELD1": "C 💀 Sharpened",
+           "FIELD2": " 379,"
+         },
+         {
+           "FIELD1": "C 🌱  Construct",
+           "FIELD2": " 384,"
+         },
+         {
+           "FIELD1": "C 🔮 Conjurer",
+           "FIELD2": " 400,"
+         },
+         {
+           "FIELD1": "C 💀 Feral",
+           "FIELD2": " 401,"
+         },
+         {
+           "FIELD1": "C 🌱  Imbued",
+           "FIELD2": " 419,"
+         },
+         {
+           "FIELD1": "C 🔮 Spinegrowth",
+           "FIELD2": " 427,"
+         },
+         {
+           "FIELD1": "C 🌱  Appendix",
+           "FIELD2": " 431,"
+         },
+         {
+           "FIELD1": "C 🔮 Fractal",
+           "FIELD2": " 438,"
+         },
+         {
+           "FIELD1": "None",
+           "FIELD2": " 1261"
+         }
+       ]
+    },
+     {
+         "name": "Fangs",
+       "properties": [
+         {
+           "FIELD1": "E 💀 Arthropod",
+           "FIELD2": " 121,"
+         },
+         {
+           "FIELD1": "E 🔮 Mouthful",
+           "FIELD2": " 125,"
+         },
+         {
+           "FIELD1": "E 🌱  Shardtooth",
+           "FIELD2": " 137,"
+         },
+         {
+           "FIELD1": "R 💀 Sidetooth",
+           "FIELD2": " 223,"
+         },
+         {
+           "FIELD1": "R 🌱  Razor",
+           "FIELD2": " 229,"
+         },
+         {
+           "FIELD1": "R 🌱  Decorous",
+           "FIELD2": " 235,"
+         },
+         {
+           "FIELD1": "R 🔮 Tuskforce",
+           "FIELD2": " 239,"
+         },
+         {
+           "FIELD1": "R 💀 Gnasher",
+           "FIELD2": " 240,"
+         },
+         {
+           "FIELD1": "R 🔮 Sonferatu",
+           "FIELD2": " 241,"
+         },
+         {
+           "FIELD1": "D 🌱  Soulpiercer",
+           "FIELD2": " 277,"
+         },
+         {
+           "FIELD1": "D 💀 Rotbite",
+           "FIELD2": " 317,"
+         },
+         {
+           "FIELD1": "D 🔮 Riddlegash",
+           "FIELD2": " 325,"
+         },
+         {
+           "FIELD1": "C 💀 Solitary",
+           "FIELD2": " 369,"
+         },
+         {
+           "FIELD1": "C 🌱  Shredder",
+           "FIELD2": " 376,"
+         },
+         {
+           "FIELD1": "C 🔮 Saber",
+           "FIELD2": " 387,"
+         },
+         {
+           "FIELD1": "C 🔮 Craving",
+           "FIELD2": " 395,"
+         },
+         {
+           "FIELD1": "C 🌱  Fleshpiercer",
+           "FIELD2": " 396,"
+         },
+         {
+           "FIELD1": "C 🌱  Sangreal",
+           "FIELD2": " 407,"
+         },
+         {
+           "FIELD1": "C 💀 Underbite",
+           "FIELD2": " 412,"
+         },
+         {
+           "FIELD1": "C 🔮 Incisors",
+           "FIELD2": " 415,"
+         },
+         {
+           "FIELD1": "C 💀 Hungering",
+           "FIELD2": " 423,"
+         },
+         {
+           "FIELD1": "None",
+           "FIELD2": " 1333"
+         }
+       ]
+    }, 
+        {
+            "name":"Wings",
+          "properties": [
+            {
+              "FIELD1": "E 🌱  Aquila",
+              "FIELD2": " 116,"
+            },
+            {
+              "FIELD1": "E 🔮 Songbird",
+              "FIELD2": " 128,"
+            },
+            {
+              "FIELD1": "E 💀 Boneframe",
+              "FIELD2": " 132,"
+            },
+            {
+              "FIELD1": "R 💀 Nightbug",
+              "FIELD2": " 234,"
+            },
+            {
+              "FIELD1": "R 🌱  Mothlight",
+              "FIELD2": " 240,"
+            },
+            {
+              "FIELD1": "R 💀 Tentacled",
+              "FIELD2": " 241,"
+            },
+            {
+              "FIELD1": "R 🔮 Flightframe",
+              "FIELD2": " 242,"
+            },
+            {
+              "FIELD1": "R 🔮 Soarfin",
+              "FIELD2": " 263,"
+            },
+            {
+              "FIELD1": "R 🌱  Odonata",
+              "FIELD2": " 263,"
+            },
+            {
+              "FIELD1": "D 🌱  Convergence",
+              "FIELD2": " 289,"
+            },
+            {
+              "FIELD1": "D 🔮 Stormkeeper",
+              "FIELD2": " 290,"
+            },
+            {
+              "FIELD1": "D 💀 Gracefall",
+              "FIELD2": " 312,"
+            },
+            {
+              "FIELD1": "C 💀 Swampstrider",
+              "FIELD2": " 368,"
+            },
+            {
+              "FIELD1": "C 🔮 Bluechirp",
+              "FIELD2": " 378,"
+            },
+            {
+              "FIELD1": "C 🌱  Sagebird",
+              "FIELD2": " 381,"
+            },
+            {
+              "FIELD1": "C 🌱  Faeflight",
+              "FIELD2": " 385,"
+            },
+            {
+              "FIELD1": "C 💀 Carcass",
+              "FIELD2": " 396,"
+            },
+            {
+              "FIELD1": "C 🔮 Soarplume",
+              "FIELD2": " 410,"
+            },
+            {
+              "FIELD1": "C 💀 Raventalon",
+              "FIELD2": " 412,"
+            },
+            {
+              "FIELD1": "C 🌱  Sunsparked",
+              "FIELD2": " 417,"
+            },
+            {
+              "FIELD1": "C 🔮 Levitation",
+              "FIELD2": " 438,"
+            },
+            {
+              "FIELD1": "None",
+              "FIELD2": " 1287"
+            }
+          ]
+    },
+     {
+        "name" : "Horns",
+       "properties":[
+         {
+           "FIELD1": "E 🔮 Imperial",
+           "FIELD2": " 107,"
+         },
+         {
+           "FIELD1": "E 💀 Gaur",
+           "FIELD2": " 128,"
+         },
+         {
+           "FIELD1": "E 🌱  Mar",
+           "FIELD2": " 136,"
+         },
+         {
+           "FIELD1": "R 🌱  Moose",
+           "FIELD2": " 223,"
+         },
+         {
+           "FIELD1": "R 💀 Regal",
+           "FIELD2": " 235,"
+         },
+         {
+           "FIELD1": "R 🔮 Oni",
+           "FIELD2": " 236,"
+         },
+         {
+           "FIELD1": "R 🔮 Bull",
+           "FIELD2": " 246,"
+         },
+         {
+           "FIELD1": "R 🌱  Wild",
+           "FIELD2": " 247,"
+         },
+         {
+           "FIELD1": "R 💀 Anoa",
+           "FIELD2": " 261,"
+         },
+         {
+           "FIELD1": "D 🔮 Bloodskewer",
+           "FIELD2": " 307,"
+         },
+         {
+           "FIELD1": "D 💀 Malevolence",
+           "FIELD2": " 308,"
+         },
+         {
+           "FIELD1": "D 🌱  Endgame",
+           "FIELD2": " 314,"
+         },
+         {
+           "FIELD1": "C 🌱  Axis",
+           "FIELD2": " 361,"
+         },
+         {
+           "FIELD1": "C 🌱  Takin",
+           "FIELD2": " 390,"
+         },
+         {
+           "FIELD1": "C 🔮 Towering",
+           "FIELD2": " 396,"
+         },
+         {
+           "FIELD1": "C 💀 Charger",
+           "FIELD2": " 402,"
+         },
+         {
+           "FIELD1": "C 💀 Striker",
+           "FIELD2": " 402,"
+         },
+         {
+           "FIELD1": "C 🔮 Eland",
+           "FIELD2": " 403,"
+         },
+         {
+           "FIELD1": "C 🔮 Antler",
+           "FIELD2": " 415,"
+         },
+         {
+           "FIELD1": "C 💀 Mouflon",
+           "FIELD2": " 420,"
+         },
+         {
+           "FIELD1": "C 🌱  Bharal",
+           "FIELD2": " 433,"
+         },
+         {
+           "FIELD1": "None",
+           "FIELD2": " 1252"
+         }
+       ]},
+    {
+      "name": "Warpaint",
+      "properties": [
+        {
+          "FIELD1": "E 💀 Decay",
+          "FIELD2": " 104,"
+        },
+        {
+          "FIELD1": "E 🔮 Rumination",
+          "FIELD2": " 126,"
+        },
+        {
+          "FIELD1": "E 🌱  Love",
+          "FIELD2": " 132,"
+        },
+        {
+          "FIELD1": "R 💀 Lamentation",
+          "FIELD2": " 229,"
+        },
+        {
+          "FIELD1": "R 🌱  Ancestry",
+          "FIELD2": " 242,"
+        },
+        {
+          "FIELD1": "R 🔮 Philosophy",
+          "FIELD2": " 242,"
+        },
+        {
+          "FIELD1": "R 🌱  Family",
+          "FIELD2": " 254,"
+        },
+        {
+          "FIELD1": "R 🔮 Discipline",
+          "FIELD2": " 256,"
+        },
+        {
+          "FIELD1": "R 💀 Conflict",
+          "FIELD2": " 262,"
+        },
+        {
+          "FIELD1": "D 🌱  Freedom",
+          "FIELD2": " 295,"
+        },
+        {
+          "FIELD1": "D 💀 Inevitability",
+          "FIELD2": " 300,"
+        },
+        {
+          "FIELD1": "D 🔮 Wanderlust",
+          "FIELD2": " 317,"
+        },
+        {
+          "FIELD1": "C 🔮 History",
+          "FIELD2": " 380,"
+        },
+        {
+          "FIELD1": "C 🌱  Birth",
+          "FIELD2": " 383,"
+        },
+        {
+          "FIELD1": "C 🌱  Reality",
+          "FIELD2": " 389,"
+        },
+        {
+          "FIELD1": "C 💀 Despair",
+          "FIELD2": " 391,"
+        },
+        {
+          "FIELD1": "C 🔮 Adage",
+          "FIELD2": " 393,"
+        },
+        {
+          "FIELD1": "C 💀 Midnight",
+          "FIELD2": " 398,"
+        },
+        {
+          "FIELD1": "C 🔮 Lore",
+          "FIELD2": " 405,"
+        },
+        {
+          "FIELD1": "C 🌱  Inertia",
+          "FIELD2": " 409,"
+        },
+        {
+          "FIELD1": "C 💀 Loneliness",
+          "FIELD2": " 445,"
+        },
+        {
+          "FIELD1": "None",
+          "FIELD2": " 1270"
+        }
+      ]
+    },
+    {
+      "name": "Piercing",
+      "properties": [
+        {
+          "FIELD1": "E - Rings",
+          "FIELD2": " 325,"
+        },
+        {
+          "FIELD1": "R - Bone",
+          "FIELD2": " 846,"
+        },
+        {
+          "FIELD1": "C - Stud",
+          "FIELD2": " 1591,"
+        },
+        {
+          "FIELD1": "C - Classic",
+          "FIELD2": " 4860"
+        }
+      ]
+    },
+     {
+       "name": "Halo",
+       "properties": [
+         {
+           "FIELD1": "Daunting",
+           "FIELD2": " 253,"
+         },
+         {
+           "FIELD1": "Majestic",
+           "FIELD2": " 254,"
+         },
+         {
+           "FIELD1": "Providential",
+           "FIELD2": " 271,"
+         },
+         {
+           "FIELD1": "Splendid",
+           "FIELD2": " 504,"
+         },
+         {
+           "FIELD1": "Forbidding",
+           "FIELD2": " 515,"
+         },
+         {
+           "FIELD1": "Propitious",
+           "FIELD2": " 527,"
+         },
+         {
+           "FIELD1": "Magnificent",
+           "FIELD2": " 826,"
+         },
+         {
+           "FIELD1": "Grandiose",
+           "FIELD2": " 857,"
+         },
+         {
+           "FIELD1": "Hopeful",
+           "FIELD2": " 879,"
+         },
+         {
+           "FIELD1": "Formidable",
+           "FIELD2": " 904,"
+         },
+         {
+           "FIELD1": "Imposing",
+           "FIELD2": " 910,"
+         },
+         {
+           "FIELD1": "Auspicious",
+           "FIELD2": " 922"
+         }
+       ]
+    }, 
+      {
+        "name": "Hairstyle",
+        "properties": [
+          {
+            "FIELD1": "E - Plucked Blue",
+            "FIELD2": " 50,"
+          },
+          {
+            "FIELD1": "E - Green Long",
+            "FIELD2": " 55,"
+          },
+          {
+            "FIELD1": "E - Pink Wolfstripe",
+            "FIELD2": " 61,"
+          },
+          {
+            "FIELD1": "E - Black Ponytail",
+            "FIELD2": " 63,"
+          },
+          {
+            "FIELD1": "E - Mountain Green",
+            "FIELD2": " 67,"
+          },
+          {
+            "FIELD1": "E - White Rising",
+            "FIELD2": " 68,"
+          },
+          {
+            "FIELD1": "E - Gravely Purple",
+            "FIELD2": " 70,"
+          },
+          {
+            "FIELD1": "E - Dual Basil",
+            "FIELD2": " 70,"
+          },
+          {
+            "FIELD1": "E - Green Mohawk",
+            "FIELD2": " 74,"
+          },
+          {
+            "FIELD1": "E - White Slick-back",
+            "FIELD2": " 74,"
+          },
+          {
+            "FIELD1": "E - Purplehooks",
+            "FIELD2": " 75,"
+          },
+          {
+            "FIELD1": "C - Monk Slick-back",
+            "FIELD2": " 75,"
+          },
+          {
+            "FIELD1": "E - Silver Ponytail",
+            "FIELD2": " 75,"
+          },
+          {
+            "FIELD1": "C - Blackhooks",
+            "FIELD2": " 81,"
+          },
+          {
+            "FIELD1": "C - Basil Long",
+            "FIELD2": " 82,"
+          },
+          {
+            "FIELD1": "C - Gravely White",
+            "FIELD2": " 93,"
+          },
+          {
+            "FIELD1": "C - Forest Ponytail",
+            "FIELD2": " 96,"
+          },
+          {
+            "FIELD1": "C - Plucked Yellow",
+            "FIELD2": " 98,"
+          },
+          {
+            "FIELD1": "C - Blue Rising",
+            "FIELD2": " 101,"
+          },
+          {
+            "FIELD1": "C - White Wolfstripe",
+            "FIELD2": " 108,"
+          },
+          {
+            "FIELD1": "R - Plucked Green",
+            "FIELD2": " 142,"
+          },
+          {
+            "FIELD1": "R - Scarlet Rising",
+            "FIELD2": " 143,"
+          },
+          {
+            "FIELD1": "R - Brown Wolfstripe",
+            "FIELD2": " 148,"
+          },
+          {
+            "FIELD1": "R - Brown Slick-back",
+            "FIELD2": " 155,"
+          },
+          {
+            "FIELD1": "R - Blonde Mohawk",
+            "FIELD2": " 156,"
+          },
+          {
+            "FIELD1": "R - Dual Green",
+            "FIELD2": " 159,"
+          },
+          {
+            "FIELD1": "R - Greenhooks",
+            "FIELD2": " 160,"
+          },
+          {
+            "FIELD1": "R - Mountain Brown",
+            "FIELD2": " 163,"
+          },
+          {
+            "FIELD1": "R - Gravely Black",
+            "FIELD2": " 164,"
+          },
+          {
+            "FIELD1": "R - Purple Long",
+            "FIELD2": " 166,"
+          },
+          {
+            "FIELD1": "C - Dark Rising",
+            "FIELD2": " 295,"
+          },
+          {
+            "FIELD1": "C - Gravely Blonde",
+            "FIELD2": " 303,"
+          },
+          {
+            "FIELD1": "C - Scarlethooks",
+            "FIELD2": " 306,"
+          },
+          {
+            "FIELD1": "R - Brown Ponytail",
+            "FIELD2": " 317,"
+          },
+          {
+            "FIELD1": "C - Scarlet Long",
+            "FIELD2": " 320,"
+          },
+          {
+            "FIELD1": "C - Purple Wolfstripe",
+            "FIELD2": " 320,"
+          },
+          {
+            "FIELD1": "C - Plucked Amber",
+            "FIELD2": " 322,"
+          },
+          {
+            "FIELD1": "C - Dual Black",
+            "FIELD2": " 325,"
+          },
+          {
+            "FIELD1": "C - Black Mohawk",
+            "FIELD2": " 328,"
+          },
+          {
+            "FIELD1": "C - Mountain Black",
+            "FIELD2": " 329,"
+          },
+          {
+            "FIELD1": "C - Black Slick-back",
+            "FIELD2": " 334,"
+          },
+          {
+            "FIELD1": "C - Classic Ponytail",
+            "FIELD2": " 336,"
+          },
+          {
+            "FIELD1": "C - Sage Ponytail",
+            "FIELD2": " 341,"
+          },
+          {
+            "FIELD1": "C - No Hair",
+            "FIELD2": " 354"
+          }
+        ]
+    }
+]}

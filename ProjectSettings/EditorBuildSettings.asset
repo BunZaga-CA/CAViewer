@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 0
+    path: Assets/Scenes/PrimeMinds.unity
+    guid: ca9bfd07a65b4dc4a8fc11db5651af77
   m_configObjects: {}

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "RarityDB/"+nameof(EssenceDB))]
+[CreateAssetMenu(menuName = nameof(EssenceDB) + "/" + nameof(EssenceDB))]
 public class RarityDB : ScriptableObject
 {
     [SerializeField] private RarityArt[] rarity;

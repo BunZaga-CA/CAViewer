@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   essenceType: 3
   essenceSpriteTop: {fileID: 21300000, guid: c4fbb7a45fe0f6a449cc1602a4b2f91b, type: 3}
-  essenceSpriteLeft: {fileID: 0}
-  essenceSpriteRight: {fileID: 0}
+  essenceSpriteLeft: {fileID: 21300000, guid: 93c4a47b58d658b41b1b2f3463758c25, type: 3}
+  essenceSpriteRight: {fileID: 21300000, guid: 9704e5f70554317449cb6d8bf2ee4665, type: 3}
   essenceColor: {r: 1, g: 0.94095165, b: 0.7688679, a: 1}
   essenceColorDark: {r: 0.38679248, g: 0.29328722, b: 0.012771457, a: 1}

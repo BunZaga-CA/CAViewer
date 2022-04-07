@@ -29,31 +29,31 @@ public class PropertyControl : MonoBehaviour
     private const string DIVINITY = "D:{0}";
     private const string PURITY = "P:{0}";
     
-    public void SetProperties(PEData peData)
+    public void SetProperties(PrimeEternalData peData)
     {
         familyText.text = peData.Family;
-        var coreEssence = NFTViewer.GetPropertyData(peData.CoreEssence);
-        var essenceData = essenceDB.GetEssence(coreEssence.EssenceType);
+        var coreEssence = peData.CoreEssence;
+        var essenceData = essenceDB.GetEssence(coreEssence);
         coreEssenceImageTop.sprite = essenceData.EssenceSpriteTop;
         coreEssenceImageTop.gameObject.SetActive(true);
         coreEssenceImageLeft.sprite = essenceData.EssenceSpriteLeft;
         coreEssenceImageLeft.gameObject.SetActive(true);
         coreEssenceImageRight.sprite = essenceData.EssenceSpriteRight;
         coreEssenceImageRight.gameObject.SetActive(true);
-        houseText.text = coreEssence.Value;
+        houseText.text = essenceData.EssenceType.ToString();
         divinityText.text = string.Format(DIVINITY, peData.Divinity);
         purityText.text = string.Format(PURITY, peData.Purity);
         idText.text = peData.Id.ToString();
         
-        claws.SetProperty(NFTViewer.GetPropertyData(peData.Claws), coreEssence.EssenceType);
-        fangs.SetProperty(NFTViewer.GetPropertyData(peData.Fangs), coreEssence.EssenceType);
-        hair.SetProperty(NFTViewer.GetPropertyData(peData.HairStyle), coreEssence.EssenceType);
-        halo.SetProperty(NFTViewer.GetPropertyData(peData.Halo), coreEssence.EssenceType);
-        horns.SetProperty(NFTViewer.GetPropertyData(peData.Horns), coreEssence.EssenceType);
-        piercing.SetProperty(NFTViewer.GetPropertyData(peData.Piercing), coreEssence.EssenceType);
-        tail.SetProperty(NFTViewer.GetPropertyData(peData.Tail), coreEssence.EssenceType);
-        warPaint.SetProperty(NFTViewer.GetPropertyData(peData.WarPaint), coreEssence.EssenceType);
-        wings.SetProperty(NFTViewer.GetPropertyData(peData.Wings), coreEssence.EssenceType);
+        claws.SetProperty(peData.Claws, coreEssence);
+        fangs.SetProperty(peData.Fangs, coreEssence);
+        hair.SetProperty(peData.HairStyle, coreEssence);
+        halo.SetProperty(peData.Halo, coreEssence);
+        horns.SetProperty(peData.Horns, coreEssence);
+        piercing.SetProperty(peData.Piercing, coreEssence);
+        tail.SetProperty(peData.Tail, coreEssence);
+        warPaint.SetProperty(peData.WarPaint, coreEssence);
+        wings.SetProperty(peData.Wings, coreEssence);
     }
 
     public void ClearData()

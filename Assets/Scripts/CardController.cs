@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class CardController : MonoBehaviour
 {
-    [SerializeField] private VideoPlayer videoPlayer;
-    [SerializeField] private RenderTexture renderTexture;
     [SerializeField] private Button cardButtonFront;
     [SerializeField] private Button cardButtonBack;
     [SerializeField] private Transform cardRoot;
@@ -31,6 +30,8 @@ public class CardController : MonoBehaviour
 
     [SerializeField] private PropertyControl propertyControl;
 
+    [SerializeField] private Slider[] mp4LoadingBar;
+    [SerializeField] private Slider[] gifLoadingBar;
     [SerializeField] private GameObject[] fetching;
     [SerializeField] private GameObject[] cardParts;
     [SerializeField] private GameObject[] frames;
@@ -39,10 +40,12 @@ public class CardController : MonoBehaviour
     [SerializeField] private Image[] darkHouseColorImages;
     [SerializeField] private TMPro.TextMeshProUGUI[] lightHouseColorText;
     [SerializeField] private TMPro.TextMeshProUGUI[] darkHouseColorText;
-    
-    private string videoURL;
-    private string gifURL;
 
+    [SerializeField] private VideoController videoController;
+
+    public static bool PrimeMindView { get; private set; }
+    [SerializeField] private bool primeMindView = false;
+    
     private Vector3 toFrontGoal = new Vector3(0, 180, 0);
     private Vector3 toBackGoal = new Vector3(0, -180, 0);
     
@@ -51,18 +54,26 @@ public class CardController : MonoBehaviour
 
     private int loadedTotal = 0;
     private int loadedMask = 3;
-    private PEData peData;
+    private PrimeEternalData peData;
 
     private CardState lastCardState = CardState.ShowingFront;
     private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
     private static readonly int DiffuseColor = Shader.PropertyToID("_DiffuseColor");
 
+    private Coroutine gifLoader = null;
+
     private void Awake()
     {
+        PrimeMindView = primeMindView;
         NFTViewer.PEDataLoaded += OnPEDataLoaded;
         NFTViewer.CardStateChanged += OnCardStateChanged;
         
         ClearData();
+        DisableCardParts();
+    }
+
+    public void DisableCardParts()
+    {
         for (int i = 0, ilen = cardParts.Length; i < ilen; i++)
         {
             cardParts[i].SetActive(false);
@@ -89,13 +100,14 @@ public class CardController : MonoBehaviour
     
     private void OnCardStateChanged(CardState cardState)
     {
-        if (videoPlayer == null)
+        if (videoController == null)
             return;
         
         switch (cardState)
         {
             case CardState.Empty:
                 ClearData();
+                DisableCardParts();
                 break;
             
             case CardState.Fetching:
@@ -110,8 +122,11 @@ public class CardController : MonoBehaviour
                 if(cardButtonBack != null)
                    cardButtonBack.onClick.RemoveListener(OnCardButtonClicked);
                 
-                if (videoPlayer.isPaused || !videoPlayer.isPlaying)
-                    videoPlayer.Play();
+                if (!videoController.isPlaying)
+                    videoController.StartVideo();
+                
+                if (videoController.isPaused)
+                    videoController.ResumeVideo();
 
                 cardRoot.DORotate(toFrontGoal, 1, RotateMode.LocalAxisAdd).OnComplete(() =>
                 {
@@ -123,12 +138,17 @@ public class CardController : MonoBehaviour
                 if(cardButtonFront != null)
                     cardButtonFront.onClick.AddListener(OnCardButtonClicked);
                 
-                if (videoPlayer.isPaused || !videoPlayer.isPlaying)
-                    videoPlayer.Play();
-
-                        
+                if (!videoController.isPlaying)
+                    videoController.StartVideo();
+                
+                if (videoController.isPaused)
+                    videoController.ResumeVideo();
+                
                 if (proGifPlayerRawImage != null)
-                    proGifPlayerRawImage.Pause();
+                    if(primeMindView)
+                        proGifPlayerRawImage.Resume();
+                    else 
+                        proGifPlayerRawImage.Pause();
 
                 lastCardState = CardState.ShowingFront;
                 break;
@@ -150,7 +170,7 @@ public class CardController : MonoBehaviour
                 if(cardButtonBack != null)
                     cardButtonBack.onClick.AddListener(OnCardButtonClicked);
                 
-                videoPlayer.Pause();
+                videoController.PauseVideo();
                 
                 if (proGifPlayerRawImage != null)
                     proGifPlayerRawImage.Resume();
@@ -160,44 +180,115 @@ public class CardController : MonoBehaviour
         }
     }
     
-    private void OnPEDataLoaded(PEData peData)
+    public static IEnumerator CheckInternetConnection(Action<bool> syncResult)
+    {
+        const string echoServer = "https://www.cacodex.com";
+
+        bool result;
+        using (var request = UnityWebRequest.Head(echoServer))
+        {
+            request.timeout = 5;
+            request.downloadHandler = new DownloadHandlerBuffer();
+            yield return request.SendWebRequest();
+            
+            result = request.result != UnityWebRequest.Result.ConnectionError;
+        }
+        syncResult(result);
+    }
+    
+    private void OnPEDataLoaded(PrimeEternalData peData)
     {
         this.peData = peData;
-        
-        videoURL = string.Format(NFTViewer.AnimationURI, peData.PicCode);
-        gifURL = string.Format(NFTViewer.ThumbURI, peData.PicCode);
-        
-        videoPlayer.url = videoURL;
-        videoPlayer.Prepare();
+        StartCoroutine(CheckInternetConnection(AfterPingInternet));
+    }
 
+    private void AfterPingInternet(bool hasInternet)
+    {
+        if (!hasInternet)
+        {
+            HandleOfflineMode();
+            return;
+        }
+        
+        var videoURL = string.Format(NFTViewer.AnimationURI, peData.PicCode);
+        var gifURL = string.Format(NFTViewer.ThumbURI, peData.PicCode);
+
+        videoController.VideoLoadComplete += OnVideoLoadComplete;
+        videoController.VideoLoadError += OnVideoLoadError;
+        videoController.VideoLoadProgress += OnMp4ProgressUpdate;
+        
+        videoController.FetchURL(videoURL);
+        
         if (proGifPlayerHandler != null)
         {
             proGifPlayerHandler.m_WebGifUrl = gifURL;
             proGifPlayerHandler.Play();
-            StartCoroutine(CheckGifComplete());
+            gifLoader = StartCoroutine(CheckGifComplete());
         }
-        
-        StartCoroutine(CheckVideoComplete());
     }
 
+    private void OnMp4ProgressUpdate(float progress)
+    {
+        if (mp4LoadingBar == null)
+            return;
+        
+        for (int i = 0, ilen = mp4LoadingBar.Length; i < ilen; ++i)
+        {
+            if (mp4LoadingBar[i] == null)
+                continue;
+            mp4LoadingBar[i].value = progress;
+        }
+    }
+    
+    private void OnGifProgressUpdate(float progress)
+    {
+        if (gifLoadingBar == null)
+            return;
+        
+        for (int i = 0, ilen = gifLoadingBar.Length; i < ilen; ++i)
+        {
+            if (gifLoadingBar[i] == null)
+                continue;
+            gifLoadingBar[i].value = progress;
+        }
+    }
+    
+    private void HandleOfflineMode()
+    {
+        CheckDoneLoadingData(1);
+        CheckDoneLoadingData(2);
+    }
+    
     private IEnumerator CheckGifComplete()
     {
+        proGifPlayerRawImage.SetLoadingCallback(OnGifProgressUpdate);
         while (proGifPlayerRawImage.IsLoadingComplete == false)
             yield return null;
-        
+
         proGifPlayerRawImage.Pause();
+        proGifPlayerRawImage.SetLoadingCallback(null);
         CheckDoneLoadingData(2);
     }
 
-    private IEnumerator CheckVideoComplete()
+    private void OnVideoLoadComplete()
     {
-        while(!videoPlayer.isPrepared)
-            yield return null;
-        
+        videoController.VideoLoadComplete -= OnVideoLoadComplete;
+        videoController.VideoLoadError -= OnVideoLoadError;
+        videoController.VideoLoadProgress -= OnMp4ProgressUpdate;
         CheckDoneLoadingData(1);
     }
-    
 
+    private void OnVideoLoadError()
+    {
+        videoController.VideoLoadComplete -= OnVideoLoadComplete;
+        videoController.VideoLoadError -= OnVideoLoadError;
+        videoController.VideoLoadProgress -= OnMp4ProgressUpdate;
+        proGifPlayerRawImage.SetLoadingCallback(null);
+        CheckDoneLoadingData(1);
+        CheckDoneLoadingData(2);
+        StopCoroutine(gifLoader);
+    }
+    
     private void CheckDoneLoadingData(int value)
     {
         loadedTotal |= value;
@@ -206,10 +297,10 @@ public class CardController : MonoBehaviour
         
         nftId.text = peData.Id.ToString();
 
-        var houseProperty = NFTViewer.GetPropertyData(peData.CoreEssence);
+        var houseProperty = peData.CoreEssence;
         
         nftFamily.text = peData.Family;
-        var essence = essenceDB.GetEssence(houseProperty.EssenceType);
+        var essence = essenceDB.GetEssence(houseProperty);
         nftCoreEssenceTop.sprite = essence.EssenceSpriteTop;
         nftCoreEssenceTop.gameObject.SetActive(true);
         
@@ -267,15 +358,13 @@ public class CardController : MonoBehaviour
         
         for (int i = 0, ilen = darkHouseColorText.Length; i < ilen; ++i)
             darkHouseColorText[i].color = essence.EssenceColorDark;
-
+        
         NFTViewer.ChangeCardState(lastCardState == CardState.ShowingFront ? CardState.ShowingFront : CardState.ShowingBack);
     }
     
     private void ClearData()
     {
         propertyControl.ClearData();
-        videoURL = String.Empty;
-        gifURL = String.Empty;
         loadedTotal = 0;
         peData = null;
         
@@ -297,12 +386,9 @@ public class CardController : MonoBehaviour
         if( proGifPlayerRawImage != null)
             proGifPlayerRawImage.Clear();
 
-        if(videoPlayer != null)
-            videoPlayer.Stop();
-        
-        if(renderTexture != null)
-            renderTexture.Release();
-        
+        if(videoController != null)
+            videoController.StopVideo();
+
         if(nftId != null)
             nftId.text = string.Empty;
         
@@ -332,5 +418,19 @@ public class CardController : MonoBehaviour
         
         if(nftPurityGlow != null)
             nftPurityGlow.gameObject.SetActive(false);
+        
+        for (int i = 0, ilen = mp4LoadingBar.Length; i < ilen; ++i)
+        {
+            if (mp4LoadingBar[i] == null)
+                continue;
+            mp4LoadingBar[i].value = 0;
+        }
+        
+        for (int i = 0, ilen = gifLoadingBar.Length; i < ilen; ++i)
+        {
+            if (gifLoadingBar[i] == null)
+                continue;
+            gifLoadingBar[i].value = 0;
+        }
     }
 }
